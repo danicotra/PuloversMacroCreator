@@ -374,8 +374,12 @@ CenterImgSrchCoords(File, ByRef CoordX, ByRef CoordY)
 {
 	static LoadedPic
 	LastEL := ErrorLevel
-	
-	Gui, Pict:Add, Pic, vLoadedPic, % RegExReplace(File, "^(\*\w+\s)+")
+
+	RegExMatch(File, "i)^(?:\*\w+\s)*\*(?<W_pv>w-?[0-9]+)\s", Scale)
+	RegExMatch(File, "i)^(?:\*\w+\s)*\*(?<H_pv>h-?[0-9]+)\s", Scale)
+	ScalePars := Trim(ScaleW_pv " " ScaleH_pv) ; (when no scale parameters are used this will be equal to "")
+
+	Gui, Pict:Add, Pic, vLoadedPic %ScalePars%, % RegExReplace(File, "^(\*\w+\s)+")
 	GuiControlGet, LoadedPic, Pict:Pos
 	Gui, Pict:Destroy
 	CoordX += LoadedPicW // 2
